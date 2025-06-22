@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const materiasRouter = require('./routes/materias');
-import {PORT} from './config.js'
-const app = express();
-const PORT = 3000;
+const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
+const app = express();
 const pool = require('./db');
 
 pool.query('SELECT * FROM materias', (err, res) => {
