@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const cors = require('cors');
 const materiasRouter = require('./routes/materias');
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
@@ -26,7 +26,8 @@ app.use((req, res, next) => {
 });
 
 // Middlewares
-app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
 // Ruta principal
 app.get('/', (req, res) => {
