@@ -1,9 +1,23 @@
 const { Pool } = require('pg');
+const {
+    DB_HOST,
+    DB_NAME,
+    DB_PASSWORD,
+    DB_USER,
+    DB_PORT,
+} = require('./config.js');
 
-console.log('🔗 DATABASE_URL disponible:', process.env.DATABASE_URL ? 'SÍ' : 'NO');
+const connectionString = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+
+console.log('💾 Intentando conectar a la DB con:');
+console.log('Host:', DB_HOST);
+console.log('User:', DB_USER);
+console.log('Database:', DB_NAME);
+console.log('Port:', DB_PORT);
+console.log('🔗 Connection string:', connectionString);
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: connectionString,
 });
 
 module.exports = pool;
