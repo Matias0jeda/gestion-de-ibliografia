@@ -7,7 +7,7 @@ const {
     DB_PORT,
 } = require('./config.js');
 
-const connectionString = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const connectionString = `postgresql://${postgres}:${QokwCIGzvTjARxNJRcVpaCywTkilzPyL}@${switchyard.proxy.rlwy.net}:${50755}/${railway}`;
 
 console.log('💾 Intentando conectar a la DB con:');
 console.log('Host:', DB_HOST);
