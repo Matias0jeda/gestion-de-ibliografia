@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const materiasRouter = require('./routes/materias');
+const facultadRouter = require('./routes/facultad');
+const bibliografiaRouter = require('./routes/bibliografia');
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
 console.log('🔍 Variables de entorno:');
@@ -37,7 +39,11 @@ app.get('/', (req, res) => {
         timestamp: new Date().toISOString(),
         endpoints: {
             materias: '/materias (GET, POST)',
-            materia_by_id: '/materias/:id (GET, PUT, DELETE)'
+            materia_by_id: '/materias/:id (GET, PUT, DELETE)',
+            facultades: '/facultad (GET, POST)',
+            facultad_by_id: '/facultad/:id (GET, PUT, DELETE)',
+            bibliografias: '/bibliografia (GET, POST)',
+            bibliografia_by_id: '/bibliografia/:id (GET, PUT, DELETE)'
         }
     });
 });
@@ -68,10 +74,13 @@ app.get('/test-db', async (req, res) => {
     }
 });
 
-// Rutas de la API (usando minúsculas para consistencia)
+// Rutas de la API
 app.use('/materias', materiasRouter);
-// También mantener la ruta con mayúscula por compatibilidad
-app.use('/Materias', materiasRouter);
+app.use('/Materias', materiasRouter); // Compatibilidad con mayúscula
+app.use('/facultad', facultadRouter);
+app.use('/Facultad', facultadRouter); // Compatibilidad con mayúscula
+app.use('/bibliografia', bibliografiaRouter);
+app.use('/Bibliografia', bibliografiaRouter); // Compatibilidad con mayúscula
 
 // Probar conexión a DB al iniciar
 pool.query('SELECT * FROM materias LIMIT 5', (err, res) => {
@@ -79,6 +88,23 @@ pool.query('SELECT * FROM materias LIMIT 5', (err, res) => {
         console.error('❌ Error al consultar la tabla materias:', err.message);
     } else {
         console.log('✅ Conexión a DB exitosa. Materias encontradas:', res.rows.length);
+    }
+});
+
+// Verificar conexión con las nuevas tablas
+pool.query('SELECT * FROM facultad LIMIT 5', (err, res) => {
+    if (err) {
+        console.error('❌ Error al consultar la tabla facultad:', err.message);
+    } else {
+        console.log('✅ Tabla facultad accesible. Facultades encontradas:', res.rows.length);
+    }
+});
+
+pool.query('SELECT * FROM bibliografia LIMIT 5', (err, res) => {
+    if (err) {
+        console.error('❌ Error al consultar la tabla bibliografia:', err.message);
+    } else {
+        console.log('✅ Tabla bibliografia accesible. Bibliografías encontradas:', res.rows.length);
     }
 });
 
@@ -97,7 +123,17 @@ app.use('*', (req, res) => {
             'POST /materias',
             'GET /materias/:id',
             'PUT /materias/:id',
-            'DELETE /materias/:id'
+            'DELETE /materias/:id',
+            'GET /facultad',
+            'POST /facultad',
+            'GET /facultad/:id',
+            'PUT /facultad/:id',
+            'DELETE /facultad/:id',
+            'GET /bibliografia',
+            'POST /bibliografia',
+            'GET /bibliografia/:id',
+            'PUT /bibliografia/:id',
+            'DELETE /bibliografia/:id'
         ]
     });
 });
