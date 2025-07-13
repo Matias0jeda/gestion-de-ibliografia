@@ -4,7 +4,7 @@ const materiasRouter = require('./routes/materias');
 const facultadRouter = require('./routes/facultad');
 const bibliografiaRouter = require('./routes/bibliografia');
 const autoresRouter = require('./routes/autores');
-const materiaDetalleRouter = require('./routes/materiaDetalle');
+const materiaDetalleRouter = require('./routes/materia_detalle');
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
 console.log('🔍 Variables de entorno:');
