@@ -3,6 +3,8 @@ const cors = require('cors');
 const materiasRouter = require('./routes/materias');
 const facultadRouter = require('./routes/facultad');
 const bibliografiaRouter = require('./routes/bibliografia');
+const autoresRouter = require('./routes/autores');
+const materiaDetalleRouter = require('./routes/materiaDetalle');
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
 console.log('🔍 Variables de entorno:');
@@ -43,7 +45,11 @@ app.get('/', (req, res) => {
             facultades: '/facultad (GET, POST)',
             facultad_by_id: '/facultad/:id (GET, PUT, DELETE)',
             bibliografias: '/bibliografia (GET, POST)',
-            bibliografia_by_id: '/bibliografia/:id (GET, PUT, DELETE)'
+            bibliografia_by_id: '/bibliografia/:id (GET, PUT, DELETE)',
+            autores: '/autores (GET, POST)',
+            autor_by_id: '/autores/:id (GET, PUT, DELETE)',
+            materia_detalle: '/materia-detalle (GET, POST)',
+            materia_detalle_by_id: '/materia-detalle/:id (GET, PUT, DELETE)'
         }
     });
 });
@@ -81,6 +87,11 @@ app.use('/facultad', facultadRouter);
 app.use('/Facultad', facultadRouter); // Compatibilidad con mayúscula
 app.use('/bibliografia', bibliografiaRouter);
 app.use('/Bibliografia', bibliografiaRouter); // Compatibilidad con mayúscula
+app.use('/autores', autoresRouter);
+app.use('/Autores', autoresRouter); // Compatibilidad con mayúscula
+app.use('/materia-detalle', materiaDetalleRouter);
+app.use('/Materia-detalle', materiaDetalleRouter); // Compatibilidad con mayúscula
+app.use('/materia_detalle', materiaDetalleRouter); // Compatibilidad con guión bajo
 
 // Probar conexión a DB al iniciar
 pool.query('SELECT * FROM materias LIMIT 5', (err, res) => {
@@ -105,6 +116,22 @@ pool.query('SELECT * FROM bibliografia LIMIT 5', (err, res) => {
         console.error('❌ Error al consultar la tabla bibliografia:', err.message);
     } else {
         console.log('✅ Tabla bibliografia accesible. Bibliografías encontradas:', res.rows.length);
+    }
+});
+
+pool.query('SELECT * FROM autores LIMIT 5', (err, res) => {
+    if (err) {
+        console.error('❌ Error al consultar la tabla autores:', err.message);
+    } else {
+        console.log('✅ Tabla autores accesible. Autores encontrados:', res.rows.length);
+    }
+});
+
+pool.query('SELECT * FROM materia_detalle LIMIT 5', (err, res) => {
+    if (err) {
+        console.error('❌ Error al consultar la tabla materia_detalle:', err.message);
+    } else {
+        console.log('✅ Tabla materia_detalle accesible. Detalles encontrados:', res.rows.length);
     }
 });
 
@@ -133,7 +160,17 @@ app.use('*', (req, res) => {
             'POST /bibliografia',
             'GET /bibliografia/:id',
             'PUT /bibliografia/:id',
-            'DELETE /bibliografia/:id'
+            'DELETE /bibliografia/:id',
+            'GET /autores',
+            'POST /autores',
+            'GET /autores/:id',
+            'PUT /autores/:id',
+            'DELETE /autores/:id',
+            'GET /materia-detalle',
+            'POST /materia-detalle',
+            'GET /materia-detalle/:id',
+            'PUT /materia-detalle/:id',
+            'DELETE /materia-detalle/:id'
         ]
     });
 });
