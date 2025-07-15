@@ -2,9 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const materiasRouter = require('./routes/materias');
 const facultadRouter = require('./routes/facultad');
-const bibliografiaRouter = require('./routes/bibliografia');
+const bibliografiaRouter = require("./routes/bibliografia");
 const autoresRouter = require('./routes/autores');
-const materiaDetalleRouter = require('./routes/materia_detalle');
 const { PORT, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = require('./config.js');
 
 console.log('🔍 Variables de entorno:');
@@ -36,21 +35,19 @@ app.use(express.json());
 // Ruta principal
 app.get('/', (req, res) => {
     res.json({
-        message: 'API de Gestión de Bibliografía',
-        status: 'OK',
-        timestamp: new Date().toISOString(),
-        endpoints: {
-            materias: '/materias (GET, POST)',
-            materia_by_id: '/materias/:id (GET, PUT, DELETE)',
-            facultades: '/facultad (GET, POST)',
-            facultad_by_id: '/facultad/:id (GET, PUT, DELETE)',
-            bibliografias: '/bibliografia (GET, POST)',
-            bibliografia_by_id: '/bibliografia/:id (GET, PUT, DELETE)',
-            autores: '/autores (GET, POST)',
-            autor_by_id: '/autores/:id (GET, PUT, DELETE)',
-            materia_detalle: '/materia-detalle (GET, POST)',
-            materia_detalle_by_id: '/materia-detalle/:id (GET, PUT, DELETE)'
-        }
+      message: "API de Gestión de Bibliografía",
+      status: "OK",
+      timestamp: new Date().toISOString(),
+      endpoints: {
+        materias: "/materias (GET, POST)",
+        materia_by_id: "/materias/:id (GET, PUT, DELETE)",
+        facultades: "/facultad (GET, POST)",
+        facultad_by_id: "/facultad/:id (GET, PUT, DELETE)",
+        bibliografias: "/bibliografia (GET, POST)",
+        bibliografia_by_id: "/bibliografia/:id (GET, PUT, DELETE)",
+        autores: "/autores (GET, POST)",
+        autor_by_id: "/autores/:id (GET, PUT, DELETE)",
+      },
     });
 });
 
@@ -86,92 +83,88 @@ app.use('/Materias', materiasRouter); // Compatibilidad con mayúscula
 app.use('/facultad', facultadRouter);
 app.use('/Facultad', facultadRouter); // Compatibilidad con mayúscula
 app.use('/bibliografia', bibliografiaRouter);
-app.use('/Bibliografia', bibliografiaRouter); // Compatibilidad con mayúscula
+app.use("/Bibliografia", bibliografiaRouter); // Compatibilidad con mayúscula
 app.use('/autores', autoresRouter);
 app.use('/Autores', autoresRouter); // Compatibilidad con mayúscula
-app.use('/materia-detalle', materiaDetalleRouter);
-app.use('/Materia-detalle', materiaDetalleRouter); // Compatibilidad con mayúscula
-app.use('/materia_detalle', materiaDetalleRouter); // Compatibilidad con guión bajo
 
 // Probar conexión a DB al iniciar
-pool.query('SELECT * FROM materias LIMIT 5', (err, res) => {
-    if (err) {
-        console.error('❌ Error al consultar la tabla materias:', err.message);
-    } else {
-        console.log('✅ Conexión a DB exitosa. Materias encontradas:', res.rows.length);
-    }
+pool.query("SELECT * FROM materias LIMIT 5", (err, res) => {
+  if (err) {
+    console.error("❌ Error al consultar la tabla materias:", err.message);
+  } else {
+    console.log(
+      "✅ Conexión a DB exitosa. Materias encontradas:",
+      res.rows.length
+    );
+  }
 });
 
 // Verificar conexión con las nuevas tablas
-pool.query('SELECT * FROM facultad LIMIT 5', (err, res) => {
-    if (err) {
-        console.error('❌ Error al consultar la tabla facultad:', err.message);
-    } else {
-        console.log('✅ Tabla facultad accesible. Facultades encontradas:', res.rows.length);
-    }
+pool.query("SELECT * FROM facultad LIMIT 5", (err, res) => {
+  if (err) {
+    console.error("❌ Error al consultar la tabla facultad:", err.message);
+  } else {
+    console.log(
+      "✅ Tabla facultad accesible. Facultades encontradas:",
+      res.rows.length
+    );
+  }
 });
 
-pool.query('SELECT * FROM bibliografia LIMIT 5', (err, res) => {
-    if (err) {
-        console.error('❌ Error al consultar la tabla bibliografia:', err.message);
-    } else {
-        console.log('✅ Tabla bibliografia accesible. Bibliografías encontradas:', res.rows.length);
-    }
+pool.query("SELECT * FROM bibliografia LIMIT 5", (err, res) => {
+  if (err) {
+    console.error("❌ Error al consultar la tabla bibliografia:", err.message);
+  } else {
+    console.log(
+      "✅ Tabla bibliografia accesible. Bibliografías encontradas:",
+      res.rows.length
+    );
+  }
 });
 
-pool.query('SELECT * FROM autores LIMIT 5', (err, res) => {
-    if (err) {
-        console.error('❌ Error al consultar la tabla autores:', err.message);
-    } else {
-        console.log('✅ Tabla autores accesible. Autores encontrados:', res.rows.length);
-    }
-});
-
-pool.query('SELECT * FROM materia_detalle LIMIT 5', (err, res) => {
-    if (err) {
-        console.error('❌ Error al consultar la tabla materia_detalle:', err.message);
-    } else {
-        console.log('✅ Tabla materia_detalle accesible. Detalles encontrados:', res.rows.length);
-    }
+pool.query("SELECT * FROM autores LIMIT 5", (err, res) => {
+  if (err) {
+    console.error("❌ Error al consultar la tabla autores:", err.message);
+  } else {
+    console.log(
+      "✅ Tabla autores accesible. Autores encontrados:",
+      res.rows.length
+    );
+  }
 });
 
 // Middleware para rutas no encontradas
 app.use('*', (req, res) => {
     console.log('❌ Ruta no encontrada:', req.method, req.originalUrl);
     res.status(404).json({
-        error: 'Ruta no encontrada',
-        path: req.originalUrl,
-        method: req.method,
-        availableRoutes: [
-            'GET /',
-            'GET /health',
-            'GET /test-db',
-            'GET /materias',
-            'POST /materias',
-            'GET /materias/:id',
-            'PUT /materias/:id',
-            'DELETE /materias/:id',
-            'GET /facultad',
-            'POST /facultad',
-            'GET /facultad/:id',
-            'PUT /facultad/:id',
-            'DELETE /facultad/:id',
-            'GET /bibliografia',
-            'POST /bibliografia',
-            'GET /bibliografia/:id',
-            'PUT /bibliografia/:id',
-            'DELETE /bibliografia/:id',
-            'GET /autores',
-            'POST /autores',
-            'GET /autores/:id',
-            'PUT /autores/:id',
-            'DELETE /autores/:id',
-            'GET /materia-detalle',
-            'POST /materia-detalle',
-            'GET /materia-detalle/:id',
-            'PUT /materia-detalle/:id',
-            'DELETE /materia-detalle/:id'
-        ]
+      error: "Ruta no encontrada",
+      path: req.originalUrl,
+      method: req.method,
+      availableRoutes: [
+        "GET /",
+        "GET /health",
+        "GET /test-db",
+        "GET /materias",
+        "POST /materias",
+        "GET /materias/:id",
+        "PUT /materias/:id",
+        "DELETE /materias/:id",
+        "GET /facultad",
+        "POST /facultad",
+        "GET /facultad/:id",
+        "PUT /facultad/:id",
+        "DELETE /facultad/:id",
+        "GET /bibliografia",
+        "POST /bibliografia",
+        "GET /bibliografia/:id",
+        "PUT /bibliografia/:id",
+        "DELETE /bibliografia/:id",
+        "GET /autores",
+        "POST /autores",
+        "GET /autores/:id",
+        "PUT /autores/:id",
+        "DELETE /autores/:id",
+      ],
     });
 });
 

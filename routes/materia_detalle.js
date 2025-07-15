@@ -4,11 +4,11 @@ const pool = require('../db');
 
 // Crear materia detalle
 router.post('/', async (req, res) => {
-  const { bibliografia_id, material } = req.body;
+  const { materia_id, bibliografia_id, material } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO materia_detalle (bibliografia_id, material) VALUES ($1, $2) RETURNING *`,
-      [bibliografia_id, material]
+      `INSERT INTO materia_detalle (materia_id, bibliografia_id, material) VALUES ($1, $2, $3) RETURNING *`,
+      [materia_id, bibliografia_id, material]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -42,14 +42,14 @@ router.get('/:id', async (req, res) => {
 // Actualizar una materia detalle
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { bibliografia_id, material } = req.body;
+  const { materia_id, bibliografia_id, material } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE materia_detalle SET bibliografia_id = $1, material = $2 WHERE id = $3 RETURNING *`,
-      [bibliografia_id, material, id]
+      `UPDATE materia_detalle SET materia_id = $1, bibliografia_id = $2, material = $3 WHERE id = $4 RETURNING *`,
+      [materia_id, bibliografia_id, material, id]
     );
     if (result.rows.length === 0)
-      return res.status(404).json({ error: 'Materia detalle no encontrada' });
+      return res.status(404).json({ error: "Materia detalle no encontrada" });
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
